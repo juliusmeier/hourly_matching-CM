@@ -1,0 +1,89 @@
+logging_level: INFO
+
+results_dir: 'results'
+
+network_file: 'input/2030_TRM25_Ep130_Load549/elec_s_156_ec_lv1.0_Ep-1H.nc' 
+elys_path: 'resources/'
+
+
+run: "all" # system_building, ED, CM, ED+CM
+
+###################
+# Scenario controls
+
+
+#wildcards
+scenario:
+  res_share: 80               # in % of load 
+  offtake_volume: 3200        # [MWh_H2 per h] fixed offtake volume per hour, 10 GB planned in DE by 2030 if run 100% 10GB*0.67=6700MWh/h
+  operation_mode: "flexible"  # flexible, static
+  ely_cap: 10000              # in MW 10000, 8000, 6000 uni_flex
+  allocation: "uniform"       # nodal, uniform
+  buses: 156                  # 10, 156, 246
+  ref: "False"
+  excess: 20                  # in % 0,20,30,40 uni_flex
+  h2_storage: "none"          # medium, flexible, none
+
+ci:
+  name: "CI"
+  res_techs: ["onwind","solar"]
+  sto_techs: ["battery"]
+
+###################
+# Fixed settings
+
+global:
+  policy_type: "co2 price"
+  co2_price_2030: 130 # EUR/tCO2
+  grid_res_techs: ["offwind","offwind-ac","offwind-dc","onwind", "ror", "solar",
+                    "hydro"] # "biomass"
+  emitters: ["CCGT", "OCGT", "coal", "lignite", "oil"]
+  H2_store_cost:
+    flexible: 0
+    medium: 44900 # EUR/MWh
+  electrolyser:
+    efficiency: 0.67
+  mc_usc: 10
+  dummies: False
+
+
+solving:
+  #tmpdir: "path/to/tmp"
+  options:
+    formulation: kirchhoff
+    n_iterations: 2  #iterations with CFE factor
+  solver:
+    name: gurobi
+    threads: 20
+    method: 2 # barrier
+    crossover: 0
+    BarConvTol: 1.e-6
+    Seed: 123
+    AggFill: 0
+    PreDual: 0
+    GURO_PAR_BARDENSETHRESH: 200
+    seed: 10 # Consistent seed for all plattforms
+
+
+###################
+# 2019 validation
+
+s2019:
+  network_file: 'input/2019_TRM25_Ep25_Load490/elec_s_156_ec_lv1.0_Ep-1H.nc' 
+  #
+  solving:
+  #tmpdir: "path/to/tmp"
+    options:
+      formulation: kirchhoff
+      n_iterations: 2  #iterations with CFE factor
+    solver:
+      name: gurobi
+      threads: 12
+      method: 2 # barrier
+      crossover: 0
+      BarConvTol: 1.e-6
+      Seed: 123
+      AggFill: 0
+      PreDual: 0
+      GURO_PAR_BARDENSETHRESH: 200
+      seed: 10 # Consistent seed for all plattforms
