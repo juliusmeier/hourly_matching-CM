@@ -9,8 +9,8 @@ Data: https://zenodo.org/record/8301213
 
 ely_cm_final
   | 
-  - input
-  - plots
-  - resource
-  - results
+  _ input
+  _ plots
+  _ resource
+  _ results
 ... (scripts) 
