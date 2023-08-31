@@ -15,14 +15,14 @@ run: "all" # system_building, ED, CM, ED+CM
 #wildcards
 scenario:
   res_share: 80               # in % of load 
-  offtake_volume: 3200        # [MWh_H2 per h] fixed offtake volume per hour, 10 GB planned in DE by 2030 if run 100% 10GB*0.67=6700MWh/h
+  offtake_volume: 1920        # 3200, 2560, 1920 [MWh_H2 per h] fixed offtake volume per hour, 10 GB planned in DE by 2030 if run 100% 10GB*0.67=6700MWh/h
   operation_mode: "flexible"  # flexible, static
   ely_cap: 10000              # in MW 10000, 8000, 6000 uni_flex
   allocation: "uniform"       # nodal, uniform
   buses: 156                  # 10, 156, 246
   ref: "False"
-  excess: 20                  # in % 0,20,30,40 uni_flex
-  h2_storage: "none"          # medium, flexible, none
+  excess: 0                  # in % 0,20,30,40 uni_flex
+  h2_storage: "cavern"          # medium, flexible, none, cavern
 
 ci:
   name: "CI"
@@ -41,6 +41,7 @@ global:
   H2_store_cost:
     flexible: 0
     medium: 44900 # EUR/MWh
+    cavern: 2000 # EUR/MWh
   electrolyser:
     efficiency: 0.67
   mc_usc: 10

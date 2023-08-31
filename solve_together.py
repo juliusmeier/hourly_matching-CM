@@ -121,6 +121,7 @@ def add_H2_demand(n, config):
         e_nom_extendable=True,
         carrier="H2 Store",
         capital_cost = store_cost,
+        lifetime = 30,
         )
     elif h2_storage == "flexible":
         store_cost = float(config["global"]["H2_store_cost"]['flexible'])
@@ -132,6 +133,17 @@ def add_H2_demand(n, config):
         carrier="H2 Store",
         capital_cost = store_cost,
         )
+    elif h2_storage == "cavern":
+        store_cost = float(config["global"]["H2_store_cost"]['cavern'])
+        n.add("Store",
+        f"{name} H2 Store",
+        bus=f"{name} H2",
+        e_cyclic=True,
+        e_nom_extendable=True,
+        carrier="H2 Store",
+        capital_cost = store_cost,
+        lifetime = 100,
+    )
     """
     if operation_mode == "static":
         store_cost = float(config["global"]["H2_store_cost"]['static'])
